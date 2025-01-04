@@ -9,13 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasOne(models.Cliente);
-      this.hasOne(models.Evento);
+      this.belongsTo(models.Cliente);
+      this.belongsTo(models.Evento);
     }
   }
   Participante.init(
     {
-      id: DataTypes.UUID,
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       idCliente: DataTypes.UUID,
       idEvento: DataTypes.UUID,
     },

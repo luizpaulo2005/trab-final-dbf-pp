@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Local extends Model {
     /**
@@ -11,17 +9,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Evento)
+      this.hasMany(models.Evento);
     }
   }
-  Local.init({
-    id: DataTypes.UUID,
-    cidade: DataTypes.STRING,
-    estado: DataTypes.STRING,
-    pais: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Local',
-  });
+  Local.init(
+    {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      cidade: DataTypes.STRING,
+      estado: DataTypes.STRING,
+      pais: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "Local",
+    }
+  );
   return Local;
 };
