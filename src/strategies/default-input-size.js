@@ -2,12 +2,26 @@
 const { z } = require("zod");
 
 class DefaultInputSizeStrategy {
-  execute(value, name) {
+  execute(value, name, optional, min, max) {
+    if (optional) {
+      return z
+        .string()
+        .optional()
+        .or(
+          z
+            .string()
+            .nonempty(`${name} é obrigatório`)
+            .min(min, `${name} deve ter no mínimo ${min} caracteres`)
+            .max(max, `${name} deve ter no máximo ${max} caracteres`)
+        )
+        .parse(value);
+    }
+
     return z
       .string()
       .nonempty(`${name} é obrigatório`)
-      .min(3, `${name} deve ter no mínimo 3 caracteres`)
-      .max(64, `${name} deve ter no máximo 64 caracteres`)
+      .min(min, `${name} deve ter no mínimo ${min} caracteres`)
+      .max(max, `${name} deve ter no máximo ${max} caracteres`)
       .parse(value);
   }
 }
