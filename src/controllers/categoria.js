@@ -1,7 +1,7 @@
 "use strict";
-const { z } = require("zod");
 const { Categoria } = require("../models");
-const { CategoriaBuilder } = require("../classes/categoria.js")
+const { CategoriaBuilder } = require("../classes/categoria.js");
+const { DefaultInputSizeStrategy } = require("../strategies/default-input-size.js");
 
 const getCategorias = async (req, res) => {
   try {
@@ -28,17 +28,11 @@ const getCategoria = async (req, res) => {
   }
 };
 
-const createCategoriaSchema = z.object({
-  tipo: z
-    .string()
-    .nonempty("Tipo é obrigatório")
-    .min(3, "O tipo deve ter no mínimo 3 caracteres")
-    .max(64, "O tipo deve ter no máximo 64 caracteres"),
-});
-
 const createCategoria = async (req, res) => {
   try {
-    const { tipo } = createCategoriaSchema.parse(req.body);
+    const { tipo } = req.body;
+
+    new DefaultInputSizeStrategy().execute(tipo, "Tipo");
 
     await new CategoriaBuilder().setTipo(tipo).build();
 
@@ -48,18 +42,12 @@ const createCategoria = async (req, res) => {
   }
 };
 
-const updateCategoriaSchema = z.object({
-  tipo: z
-    .string()
-    .nonempty("Tipo é obrigatório")
-    .min(3, "O tipo deve ter no mínimo 3 caracteres")
-    .max(64, "O tipo deve ter no máximo 64 caracteres"),
-});
-
 const updateCategoria = async (req, res) => {
   try {
     const { id } = req.params;
-    const { tipo } = updateCategoriaSchema.parse(req.body);
+    const { tipo } = req.body;
+
+    new DefaultInputSizeStrategy().execute(tipo, "Tipo");
 
     const categoria = await Categoria.findByPk(id);
 
