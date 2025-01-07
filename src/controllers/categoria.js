@@ -1,5 +1,7 @@
+"use strict";
 const { z } = require("zod");
-const { Categoria } = require("../models/index");
+const { Categoria } = require("../models");
+const { CategoriaBuilder } = require("../classes/categoria.js")
 
 const getCategorias = async (req, res) => {
   try {
@@ -38,7 +40,7 @@ const createCategoria = async (req, res) => {
   try {
     const { tipo } = createCategoriaSchema.parse(req.body);
 
-    await Categoria.create({ tipo });
+    await new CategoriaBuilder().setTipo(tipo).build();
 
     return res.status(201).json({ message: "Categoria criada com sucesso" });
   } catch (error) {
