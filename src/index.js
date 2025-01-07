@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const { helloRouter } = require("./router/hello.js");
 const { categoriaRouter } = require("./router/categoria.js");
+const { localRouter } = require("./router/local.js");
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 
 app.use("/hello", helloRouter);
 app.use("/categoria", categoriaRouter)
+app.use("/local", localRouter);
 
 app.listen(env.PORT, () => {
   console.log(`Server is running on port ${env.PORT}`);
