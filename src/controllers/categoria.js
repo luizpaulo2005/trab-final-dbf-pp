@@ -1,7 +1,9 @@
 "use strict";
 const { Categoria } = require("../models");
 const { CategoriaBuilder } = require("../classes/categoria.js");
-const { DefaultInputSizeStrategy } = require("../strategies/default-input-size.js");
+const {
+  DefaultInputSizeStrategy,
+} = require("../strategies/default-input-size.js");
 
 const getCategorias = async (req, res) => {
   try {
@@ -32,7 +34,7 @@ const createCategoria = async (req, res) => {
   try {
     const { tipo } = req.body;
 
-    new DefaultInputSizeStrategy().execute(tipo, "Tipo");
+    new DefaultInputSizeStrategy().execute(tipo, "Tipo", false, 3, 64);
 
     await new CategoriaBuilder().setTipo(tipo).build();
 
@@ -47,7 +49,7 @@ const updateCategoria = async (req, res) => {
     const { id } = req.params;
     const { tipo } = req.body;
 
-    new DefaultInputSizeStrategy().execute(tipo, "Tipo");
+    new DefaultInputSizeStrategy().execute(tipo, "Tipo", false, 3, 64);
 
     const categoria = await Categoria.findByPk(id);
 
