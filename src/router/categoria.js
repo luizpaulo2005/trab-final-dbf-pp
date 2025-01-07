@@ -1,3 +1,4 @@
+"use strict";
 const {
   createCategoria,
   getCategoria,
@@ -15,4 +16,4 @@ categoriaRouter.post("/", createCategoria);
 categoriaRouter.put("/:id", updateCategoria);
 categoriaRouter.delete("/:id", deleteCategoria);
 
-module.exports = categoriaRouter;
+module.exports = { categoriaRouter };

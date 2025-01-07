@@ -3,7 +3,7 @@ const { env } = require("./lib/env.js");
 const morgan = require("morgan");
 const cors = require("cors");
 const { helloRouter } = require("./router/hello.js");
-const categoriaRouter = require("./router/categoria.js");
+const { categoriaRouter } = require("./router/categoria.js");
 
 const app = express();
 
