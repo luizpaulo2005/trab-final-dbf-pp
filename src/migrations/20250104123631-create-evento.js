@@ -9,27 +9,6 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      idLocal: {
-        type: Sequelize.UUID,
-        references: {
-          model: "Local",
-          key: "id",
-        },
-      },
-      idCategoria: {
-        type: Sequelize.UUID,
-        references: {
-          model: "Categoria",
-          key: "id",
-        },
-      },
-      idUsuario: {
-        type: Sequelize.UUID,
-        references: {
-          model: "Usuarios",
-          key: "id",
-        },
-      },
       nome: {
         type: Sequelize.STRING,
       },

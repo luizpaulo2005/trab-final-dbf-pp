@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Local);
-      this.belongsTo(models.Categoria);
-      this.belongsTo(models.Usuario);
+      this.belongsTo(models.Local, { as: "idLocal" });
+      this.belongsTo(models.Categoria, { as: "idCategoria" });
+      this.belongsTo(models.Usuario, {  as: "idUsuario" });
       this.hasMany(models.Participante);
     }
   }
@@ -23,9 +23,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      idLocal: DataTypes.UUID,
-      idCategoria: DataTypes.UUID,
-      idUsuario: DataTypes.UUID,
       nome: DataTypes.STRING,
       descricao: DataTypes.STRING,
       inicio: DataTypes.DATE,
