@@ -9,8 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.Cliente);
-      this.belongsTo(models.Evento);
     }
   }
   Participante.init(
