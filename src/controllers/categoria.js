@@ -7,9 +7,11 @@ const {
 
 const getCategorias = async (req, res) => {
   try {
-    return res
-      .status(200)
-      .json(await Categoria.findAll({ order: [["createdAt", "DESC"]] }));
+    const categorias = await Categoria.findAll({
+      order: [["createdAt", "DESC"]],
+    });
+
+    return res.render("categoria", { categorias });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -38,7 +40,16 @@ const createCategoria = async (req, res) => {
 
     await new CategoriaBuilder().setTipo(tipo).build();
 
-    return res.status(201).json({ message: "Categoria criada com sucesso" });
+    // return res.status(201).json({ message: "Categoria criada com sucesso" });
+    return res.redirect("/categoria");
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const createCategoriaView = async (req, res) => {
+  try {
+    return res.render("categoria/cadastrar");
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -87,6 +98,7 @@ const deleteCategoria = async (req, res) => {
 
 module.exports = {
   createCategoria,
+  createCategoriaView,
   deleteCategoria,
   getCategoria,
   getCategorias,
