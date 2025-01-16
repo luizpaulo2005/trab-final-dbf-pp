@@ -12,7 +12,7 @@ module.exports = {
       idLocal: {
         type: Sequelize.UUID,
         references: {
-          model: "Local",
+          model: "Locals",
           key: "id",
         },
       },
