@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar <%= categoria.tipo%></title>
+    <script>
+      function atualizarCategoria() {
+        const tipo = document.getElementById("tipo").value.trim();
+        if (tipo) {
+          fetch(`/categoria/<%= categoria.id %>`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tipo }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                window.location.href = "/categoria";
+              } else {
+                alert("Erro ao atualizar categoria.");
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              alert("Erro ao atualizar categoria.");
+            });
+        } else {
+          alert("Por favor, insira um valor para atualizar.");
+        }
+      }
+    </script>
+  </head>
+  <body class="min-h-screen min-w-screen p-2">
+    <div class="border rounded-md p-2 flex items-center justify-between">
+      <p class="text-xl font-semibold">Categorias</p>
+      <div class="flex items-center gap-2">
+        <a href="/cliente">Clientes</a>
+        <a href="/evento">Eventos</a>
+        <a href="/local">Locais</a>
+        <a href="/participante">Participantes</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/categoria/cadastrar"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Criar
+        </a>
+        <button
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+    <div
+      class="flex items-center justify-center h-[calc(100vh-5rem)] w-full text-center"
+    >
+      <form class="flex flex-col gap-2">
+        <p>Valor atual: <%= categoria.tipo %></p>
+        <div class="flex items-center gap-2">
+          <input
+            type="text"
+            name="tipo"
+            id="tipo"
+            value="<%= categoria.tipo %>"
+            class="border rounded px-2.5 py-1.5 outline-none"
+          />
+          <button
+            onclick="atualizarCategoria()"
+            class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+          >
+            Atualizar
+          </button>
+        </div>
+      </form>
+    </div>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+  </body>
+</html>

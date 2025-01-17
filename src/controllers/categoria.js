@@ -78,6 +78,21 @@ const updateCategoria = async (req, res) => {
   }
 };
 
+const updateCategoriaView = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const categoria = await Categoria.findByPk(id);
+
+    if (!categoria) {
+      return res.status(404).json({ error: "Categoria não encontrada" });
+    }
+
+    return res.render("categoria/editar", { categoria });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 const deleteCategoria = async (req, res) => {
   try {
     const { id } = req.params;
@@ -103,4 +118,5 @@ module.exports = {
   getCategoria,
   getCategorias,
   updateCategoria,
+  updateCategoriaView
 };
