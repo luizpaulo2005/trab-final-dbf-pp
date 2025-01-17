@@ -83,12 +83,13 @@
         </button>
       </div>
     </div>
-    <div>
+    <div class="mt-2">
       <% if (categorias.length <= 0) { %>
       <p
         class="h-[calc(100vh-5rem)] w-full flex items-center justify-center text-center"
       >
-        Nenhuma categoria cadastrada, cadastre uma nova<a
+        Nenhuma categoria cadastrada, cadastre uma nova
+        <a
           href="/categoria/cadastrar"
           class="ml-1 underline text-blue-500 visited:text-violet-500"
           >aqui</a
@@ -108,11 +109,12 @@
             >
               <img src="/trash-2.png" />
             </button>
-            <button
+            <a
+              href="/categoria/editar/<%=categoria.id%>"
               class="p-1 hover:bg-blue-500 transition-colors rounded-md size-6"
             >
               <img src="/pencil.png" />
-            </button>
+            </a>
           </div>
         </div>
         <% }) %>
