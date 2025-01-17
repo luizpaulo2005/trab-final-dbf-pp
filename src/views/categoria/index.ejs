@@ -9,7 +9,7 @@
         const input = document.getElementById("nome");
         const nome = input.value.trim();
         if (nome) {
-          window.location.href = `/evento/buscar?nome=${encodeURIComponent(
+          window.location.href = `/categoria/buscar?nome=${encodeURIComponent(
             nome
           )}`;
         } else {
