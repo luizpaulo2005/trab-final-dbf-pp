@@ -1,13 +1,15 @@
 "use strict";
 const { Local } = require("../models");
 const { LocalBuilder } = require("../classes/local.js");
-const { DefaultInputSizeStrategy } = require("../strategies/default-input-size.js");
+const {
+  DefaultInputSizeStrategy,
+} = require("../strategies/default-input-size.js");
 
 const getLocals = async (req, res) => {
   try {
-    return res
-      .status(200)
-      .json(await Local.findAll({ order: [["createdAt", "DESC"]] }));
+    const locais = await Local.findAll({ order: [["createdAt", "DESC"]] });
+
+    return res.render("local", { locais });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -42,7 +44,16 @@ const createLocal = async (req, res) => {
       .setPais(pais)
       .build();
 
-    return res.status(201).json({ message: "Local criado com sucesso" });
+    // return res.status(201).json({ message: "Local criado com sucesso" });
+    return res.redirect("/local");
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const createLocalView = async (req, res) => {
+  try {
+    return res.render("local/cadastrar");
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -97,6 +108,7 @@ const deleteLocal = async (req, res) => {
 
 module.exports = {
   createLocal,
+  createLocalView,
   deleteLocal,
   getLocal,
   getLocals,
