@@ -11,17 +11,9 @@ module.exports = {
       },
       idCliente: {
         type: Sequelize.UUID,
-        references: {
-          model: "Clientes",
-          key: "id",
-        },
       },
       idEvento: {
         type: Sequelize.UUID,
-        references: {
-          model: "Eventos",
-          key: "id",
-        },
       },
       createdAt: {
         allowNull: false,

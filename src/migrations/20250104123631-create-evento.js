@@ -11,24 +11,12 @@ module.exports = {
       },
       idLocal: {
         type: Sequelize.UUID,
-        references: {
-          model: "Locals",
-          key: "id",
-        },
       },
       idCategoria: {
         type: Sequelize.UUID,
-        references: {
-          model: "Categoria",
-          key: "id",
-        },
       },
       idUsuario: {
         type: Sequelize.UUID,
-        references: {
-          model: "Usuarios",
-          key: "id",
-        },
       },
       nome: {
         type: Sequelize.STRING,
