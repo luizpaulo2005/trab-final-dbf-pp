@@ -13,10 +13,11 @@ const { Router } = require("express");
 const categoriaRouter = Router();
 
 categoriaRouter.get("/", getCategorias);
-categoriaRouter.get("/cadastrar", createCategoriaView);
-categoriaRouter.get("/:id", getCategoria);
-categoriaRouter.get("/editar/:id", updateCategoriaView);
 categoriaRouter.post("/", createCategoria);
+categoriaRouter.get("/cadastrar", createCategoriaView);
+categoriaRouter.get("/buscar", getCategorias);
+categoriaRouter.get("/editar/:id", updateCategoriaView);
+categoriaRouter.get("/:id", getCategoria);
 categoriaRouter.put("/:id", updateCategoria);
 categoriaRouter.delete("/:id", deleteCategoria);
 

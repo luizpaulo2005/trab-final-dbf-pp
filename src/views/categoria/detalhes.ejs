@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Categorias</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/dayjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/locale/pt-br.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/plugin/relativeTime.min.js"></script>
     <script>
       function redirectToSearch() {
         const input = document.getElementById("nome");
@@ -15,23 +18,6 @@
         } else {
           alert("Por favor, insira um valor para buscar.");
         }
-      }
-
-      function deleteCategoria(id) {
-        fetch(`/categoria/${id}`, {
-          method: "DELETE",
-        })
-          .then((response) => {
-            if (response.ok) {
-              window.location.reload();
-            } else {
-              alert("Erro ao deletar categoria.");
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            alert("Erro ao deletar categoria.");
-          });
       }
 
       window.onload = function () {
@@ -48,7 +34,7 @@
   </head>
   <body class="min-h-screen min-w-screen p-2">
     <div class="border rounded-md p-2 flex items-center justify-between">
-      <a href="/categoria" class="text-xl font-semibold">Categorias</>
+      <a href="/categoria" class="text-xl font-semibold">Categorias</a>
       <div class="flex items-center gap-2">
         <a href="/cliente">Clientes</a>
         <a href="/">Eventos</a>
@@ -84,43 +70,58 @@
       </div>
     </div>
     <div class="mt-2">
-      <% if (categorias.length <= 0) { %>
+      <% if (!categoria) { %>
       <p
         class="h-[calc(100vh-5rem)] w-full flex items-center justify-center text-center"
       >
-        Nenhuma categoria encontrada, cadastre uma nova
+        Não encontrado
         <a
-          href="/categoria/cadastrar"
+          href="/categoria"
           class="ml-1 underline text-blue-500 visited:text-violet-500"
-          >aqui</a
         >
+          voltar
+        </a>
       </p>
       <% } else { %>
       <div class="flex gap-2 flex-wrap">
-        <% categorias.forEach((categoria) => { %>
         <div
-          class="border rounded-md p-2 gap-2 flex items-center justify-between max-w-fit w-full"
+          class="border rounded-md p-2 gap-2 flex flex-col w-full h-[calc(100vh-5rem)]"
         >
-          <a href="/categoria/<%=categoria.id%>"><%=categoria.tipo%></a>
-          <div class="flex items-center gap-2">
-            <button
-              onclick="deleteCategoria('<%=categoria.id%>')"
-              class="p-1 hover:bg-red-500 transition-colors rounded-md size-6"
-            >
-              <img src="/trash-2.png" />
-            </button>
-            <a
-              href="/categoria/editar/<%=categoria.id%>"
-              class="p-1 hover:bg-blue-500 transition-colors rounded-md size-6"
-            >
-              <img src="/pencil.png" />
+          <span class="flex items-center gap-2">
+            <a href="/categoria">
+              <img
+                src="/chevron-left.png"
+                class="rounded-full hover:bg-zinc-300/50 transition-colors"
+              />
             </a>
+            Detalhes da categoria
+          </span>
+          <div class="flex flex-col gap-1">
+            <span>ID: <%=categoria.id%></span>
+            <span>Tipo: <%=categoria.tipo%></span>
+            <span>
+              Criado
+              <span id="createdAt"></span>
+            </span>
+            <span>
+              Atualizado
+              <span id="updatedAt"><%=categoria.updatedAt%></span>
+            </span>
           </div>
         </div>
-        <% }) %>
       </div>
       <% } %>
     </div>
     <script src="https://cdn.tailwindcss.com" defer></script>
+    <script>
+      dayjs.locale("pt-br");
+      dayjs.extend(dayjs_plugin_relativeTime);
+      document.getElementById("createdAt").textContent = dayjs(
+        "<%=categoria.createdAt%>"
+      ).fromNow();
+      document.getElementById("updatedAt").textContent = dayjs(
+        "<%=categoria.updatedAt%>"
+      ).fromNow();
+    </script>
   </body>
 </html>

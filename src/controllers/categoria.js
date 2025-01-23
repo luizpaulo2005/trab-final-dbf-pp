@@ -7,9 +7,19 @@ const {
 
 const getCategorias = async (req, res) => {
   try {
+    const { tipo } = req.query;
+
     const categorias = await Categoria.findAll({
       order: [["createdAt", "DESC"]],
     });
+
+    if (tipo) {
+      const filteredCategorias = categorias.filter((categoria) =>
+        categoria.tipo.toLowerCase().includes(tipo.toLowerCase())
+      );
+
+      return res.render("categoria", { categorias: filteredCategorias });
+    }
 
     return res.render("categoria", { categorias });
   } catch (error) {
@@ -26,7 +36,7 @@ const getCategoria = async (req, res) => {
       return res.status(404).json({ error: "Categoria não encontrada" });
     }
 
-    return res.status(200).json(categoria);
+    return res.render("categoria/detalhes", { categoria });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -118,5 +128,5 @@ module.exports = {
   getCategoria,
   getCategorias,
   updateCategoria,
-  updateCategoriaView
+  updateCategoriaView,
 };
