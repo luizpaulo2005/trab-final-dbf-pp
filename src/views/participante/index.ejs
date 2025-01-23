@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Participantes</title>
+    <script>
+      function deleteParticipante(id) {
+        fetch(`/participante/${id}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              alert("Erro ao deletar participante.");
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("Erro ao deletar participante.");
+          });
+      }
+    </script>
+  </head>
+  <body class="min-h-screen min-w-screen p-2">
+    <div class="border rounded-md p-2 flex items-center justify-between">
+      <a href="/participante" class="text-xl font-semibold">Participantes</a>
+      <div class="flex items-center gap-2">
+        <a href="/categoria">Categorias</a>
+        <a href="/cliente">Clientes</a>
+        <a href="/">Eventos</a>
+        <a href="/local">Locais</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/participante/cadastrar"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Criar
+        </a>
+        <button
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+    <div class="mt-2">
+      <% if (participantes.length <= 0) { %>
+      <p
+        class="h-[calc(100vh-5rem)] w-full flex items-center justify-center text-center"
+      >
+        Nenhum participante cadastrado, cadastre um novo
+        <a
+          href="/participante/cadastrar"
+          class="ml-1 underline text-blue-500 visited:text-violet-500"
+        >
+          aqui
+        </a>
+      </p>
+      <% } else { %>
+      <div class="flex gap-2 flex-wrap">
+        <% participantes.forEach((participante) => { %>
+        <div
+          class="border rounded-md p-2 gap-2 flex items-center justify-between max-w-fit w-full"
+        >
+          <a href="/participante/<%=participante.id%>" class="truncate">
+            <%=participante.id%>
+          </a>
+          <div class="flex items-center gap-2">
+            <button
+              onclick="deleteParticipante('<%=participante.id%>')"
+              class="p-1 hover:bg-red-500 transition-colors rounded-md size-6"
+            >
+              <img src="/trash-2.png" />
+            </button>
+            <a
+              href="/participante/editar/<%=participante.id%>"
+              class="p-1 hover:bg-blue-500 transition-colors rounded-md size-6"
+            >
+              <img src="/pencil.png" />
+            </a>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% } %>
+    </div>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+  </body>
+</html>

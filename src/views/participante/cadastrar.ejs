@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Participantes</title>
+  </head>
+  <body class="min-h-screen min-w-screen p-2">
+    <div class="border rounded-md p-2 flex items-center justify-between">
+      <p class="text-xl font-semibold">Eventos</p>
+      <div class="flex items-center gap-2">
+        <a href="/categoria">Categorias</a>
+        <a href="/cliente">Clientes</a>
+        <a href="/local">Locais</a>
+        <a href="/participante">Participantes</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/cadastrar"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Criar
+        </a>
+        <button
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+    <div
+      class="h-[calc(100vh-5rem)] w-full flex items-center justify-center text-center"
+    >
+      <form
+        action="/participante"
+        method="post"
+        class="flex flex-col items-center gap-2"
+      >
+        <select
+          name="idCliente"
+          id="idCliente"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none w-full bg-transparent"
+        >
+          <option value="" disabled selected>Selecione um cliente</option>
+          <% clientes.forEach((cliente) => {%>
+          <option value="<%=cliente.id%>"><%=cliente.nome%></option>
+          <%})%>
+        </select>
+        <select
+          name="idEvento"
+          id="idEvento"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none w-full bg-transparent"
+        >
+          <option value="" disabled selected>Selecione um evento</option>
+          <% eventos.forEach((evento) => {%>
+          <option value="<%=evento.id%>"><%=evento.nome%></option>
+          <%})%>
+        </select>
+        <button
+          type="submit"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors w-full"
+        >
+          Cadastrar
+        </button>
+      </form>
+    </div>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+  </body>
+</html>
