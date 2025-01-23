@@ -5,14 +5,16 @@ const {
   getUsuario,
   getUsuarios,
   updateUsuario,
+  createUsuarioView,
 } = require("../controllers/usuario.js");
 const { Router } = require("express");
 
 const usuarioRouter = Router();
 
 usuarioRouter.get("/", getUsuarios);
-usuarioRouter.get("/:id", getUsuario);
 usuarioRouter.post("/", createUsuario);
+usuarioRouter.get("/cadastrar", createUsuarioView);
+usuarioRouter.get("/:id", getUsuario);
 usuarioRouter.put("/:id", updateUsuario);
 usuarioRouter.delete("/:id", deleteUsuario);
 

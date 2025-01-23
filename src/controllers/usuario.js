@@ -8,13 +8,23 @@ const { EmailInputStrategy } = require("../strategies/email-input.js");
 
 const getUsuarios = async (req, res) => {
   try {
-    return res
-      .status(200)
-      .json(await Usuario.findAll({ order: [["createdAt", "DESC"]] }));
+    const { nome } = req.query;
+
+    const usuarios = await Usuario.findAll({ order: [["createdAt", "DESC"]] });
+
+    if (nome) {
+      const filteredUsuarios = usuarios.filter((usuario) =>
+        usuario.nome.toLowerCase().includes(nome.toLowerCase())
+      );
+
+      return res.render("usuario", { usuarios: filteredUsuarios });
+    }
+
+    return res.render("usuario", { usuarios });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-}
+};
 
 const getUsuario = async (req, res) => {
   try {
@@ -25,7 +35,7 @@ const getUsuario = async (req, res) => {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    return res.status(200).json(usuario);
+    return res.render("usuario/detalhes", { usuario });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -41,11 +51,20 @@ const createUsuario = async (req, res) => {
 
     new EmailInputStrategy().execute(email);
 
-    const usuario = await new UsuarioBuilder().setSenha(senha)
+    const usuario = await new UsuarioBuilder().setSenha(senha);
 
     await usuario.setNome(nome).setEmail(email).build();
 
-    return res.status(201).json({ message: "Usuário criado com sucesso" });
+    // return res.status(201).json({ message: "Usuário criado com sucesso" });
+    return res.redirect("/usuario");
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const createUsuarioView = async (req, res) => {
+  try {
+    return res.render("usuario/cadastrar");
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -103,6 +122,7 @@ const deleteUsuario = async (req, res) => {
 
 module.exports = {
   createUsuario,
+  createUsuarioView,
   deleteUsuario,
   getUsuario,
   getUsuarios,
