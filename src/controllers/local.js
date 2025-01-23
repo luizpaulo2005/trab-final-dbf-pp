@@ -7,7 +7,17 @@ const {
 
 const getLocals = async (req, res) => {
   try {
+    const { cidade } = req.query;
+
     const locais = await Local.findAll({ order: [["createdAt", "DESC"]] });
+
+    if (cidade) {
+      const filteredLocais = locais.filter((local) =>
+        local.cidade.toLowerCase().includes(cidade.toLowerCase())
+      );
+
+      return res.render("local", { locais: filteredLocais });
+    }
 
     return res.render("local", { locais });
   } catch (error) {
@@ -24,7 +34,7 @@ const getLocal = async (req, res) => {
       return res.status(404).json({ error: "Local não encontrado" });
     }
 
-    return res.status(200).json(local);
+    return res.render("local/detalhes", { local });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -89,6 +99,21 @@ const updateLocal = async (req, res) => {
   }
 };
 
+const updateLocalView = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const local = await Local.findByPk(id);
+
+    if (!local) {
+      return res.status(404).json({ error: "Local não encontrado" });
+    }
+
+    return res.render("local/editar", { local });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 const deleteLocal = async (req, res) => {
   try {
     const { id } = req.params;
@@ -113,4 +138,5 @@ module.exports = {
   getLocal,
   getLocals,
   updateLocal,
+  updateLocalView,
 };

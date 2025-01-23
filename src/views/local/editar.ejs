@@ -5,28 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Locais</title>
     <script>
-      function redirectToSearch() {
-        const input = document.getElementById("nome");
-        const nome = input.value.trim();
-        if (nome) {
-          window.location.href = `/local/buscar?nome=${encodeURIComponent(
-            nome
-          )}`;
+      function atualizarLocal() {
+        const cidade = document.getElementById("cidade").value.trim();
+        const estado = document.getElementById("estado").value.trim();
+        const pais = document.getElementById("pais").value.trim();
+        if (cidade && estado && pais) {
+          fetch(`/local/<%= local.id %>`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ cidade, estado, pais }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                window.location.href = "/local";
+              } else {
+                alert("Erro ao atualizar local.");
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              alert("Erro ao atualizar local.");
+            });
         } else {
-          alert("Por favor, insira um valor para buscar.");
+          alert("Por favor, insira um valor para atualizar.");
         }
       }
-
-      window.onload = function () {
-        document
-          .getElementById("nome")
-          .addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              redirectToSearch();
-            }
-          });
-      };
     </script>
   </head>
   <body class="min-h-screen min-w-screen p-2">
@@ -39,20 +44,6 @@
         <a href="/participante">Participantes</a>
       </div>
       <div class="flex items-center gap-2">
-        <div class="border px-2 py-1 rounded-md flex items-center gap-2">
-          <input
-            class="focus:outline-none"
-            type="text"
-            name="nome"
-            id="nome"
-            placeholder="Digite alguma coisa..."
-          />
-          <img
-            class="hover:cursor-pointer"
-            src="/search.png"
-            onclick="redirectToSearch()"
-          />
-        </div>
         <button
           class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
         >
@@ -63,16 +54,13 @@
     <div
       class="h-[calc(100vh-5rem)] w-full flex items-center justify-center text-center"
     >
-      <form
-        action="/local"
-        method="post"
-        class="flex flex-col items-center gap-2"
-      >
+      <form class="flex flex-col items-center gap-2">
         <input
           type="text"
           name="cidade"
           id="cidade"
           placeholder="Digite a cidade"
+          value="<%=local.cidade%>"
           class="border rounded px-2.5 py-1.5 outline-none"
         />
         <input
@@ -80,6 +68,7 @@
           name="estado"
           id="estado"
           placeholder="Digite o estado"
+          value="<%=local.estado%>"
           class="border rounded px-2.5 py-1.5 outline-none"
         />
         <input
@@ -87,13 +76,15 @@
           name="pais"
           id="pais"
           placeholder="Digite o pais"
+          value="<%=local.pais%>"
           class="border rounded px-2.5 py-1.5 outline-none"
         />
         <button
-          type="submit"
+          type="button"
+          onclick="atualizarLocal()"
           class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors w-full"
         >
-          Cadastrar
+          Atualizar
         </button>
       </form>
     </div>
