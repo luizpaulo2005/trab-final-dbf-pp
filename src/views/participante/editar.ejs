@@ -6,10 +6,17 @@
     <title>Participantes</title>
     <script>
       function atualizarParticipante() {
-        const idCliente = document.getElementById("idCliente").value;
-        const idEvento = document.getElementById("idEvento").value;
+        const idCliente = document.getElementById("idCliente").value.trim();
+        const idEvento = document.getElementById("idEvento").value.trim();
         fetch("/participante/<%=participante.id%>", {
           method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idCliente,
+            idEvento,
+          }),
         })
           .then((response) => {
             if (response.ok) {
@@ -61,7 +68,12 @@
         >
           <option value="" disabled>Selecione um cliente</option>
           <% clientes.forEach((cliente) => {%>
-          <option value="<%=cliente.id%>"><%=cliente.nome%></option>
+          <option
+            selected="<%= cliente.id == participante.idCliente%>"
+            value="<%=cliente.id%>"
+          >
+            <%=cliente.nome%>
+          </option>
           <%})%>
         </select>
         <select
@@ -73,7 +85,12 @@
         >
           <option value="" disabled>Selecione um evento</option>
           <% eventos.forEach((evento) => {%>
-          <option value="<%=evento.id%>"><%=evento.nome%></option>
+          <option
+            value="<%=evento.id%>"
+            selected="<%= evento.id == participante.idEvento%>"
+          >
+            <%=evento.nome%>
+          </option>
           <%})%>
         </select>
         <button
@@ -85,6 +102,6 @@
         </button>
       </form>
     </div>
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4" defer></script>
   </body>
 </html>

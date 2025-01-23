@@ -6,22 +6,22 @@
     <title>Eventos</title>
     <script>
       function atualizarEvento() {
-        const nome = document.getElementById("nome").value.trim();
-        const descricao = document.getElementById("descricao").value.trim();
-        const endereco = document.getElementById("endereco").value.trim();
-        const inicio = document.getElementById("inicio").value.trim();
-        const fim = document.getElementById("fim").value.trim();
-        const idCategoria = document.getElementById("idCategoria").value.trim();
-        const idLocal = document.getElementById("idLocal").value.trim();
-        const idUsuario = document.getElementById("idUsuario").value.trim();
-        console.log(`Nome: ${nome}`)
-        console.log(`Descricao: ${descricao}`)
-        console.log(`Endereco: ${endereco}`)
-        console.log(`Inicio: ${inicio}`)
-        console.log(`Fim: ${fim}`)
-        console.log(`IdCategoria: ${idCategoria}`)
-        console.log(`IdLocal: ${idLocal}`)
-        console.log(`IdUsuario: ${idUsuario}`)
+        const nome = document.getElementById('nome').value.trim();
+        const descricao = document.getElementById('descricao').value.trim();
+        const endereco = document.getElementById('endereco').value.trim();
+        const inicio = document.getElementById('inicio').value.trim();
+        const fim = document.getElementById('fim').value.trim();
+        const idCategoria = document.getElementById('idCategoria').value.trim();
+        const idLocal = document.getElementById('idLocal').value.trim();
+        const idUsuario = document.getElementById('idUsuario').value.trim();
+        console.log(`Nome: ${nome}`);
+        console.log(`Descricao: ${descricao}`);
+        console.log(`Endereco: ${endereco}`);
+        console.log(`Inicio: ${inicio}`);
+        console.log(`Fim: ${fim}`);
+        console.log(`IdCategoria: ${idCategoria}`);
+        console.log(`IdLocal: ${idLocal}`);
+        console.log(`IdUsuario: ${idUsuario}`);
         if (
           nome &&
           descricao &&
@@ -33,9 +33,9 @@
           idUsuario
         ) {
           fetch(`/<%= evento.id %>`, {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               nome,
@@ -50,24 +50,24 @@
           })
             .then((response) => {
               if (response.ok) {
-                window.location.href = "/";
+                window.location.href = '/';
               } else {
-                alert("Erro ao atualizar evento.");
+                alert('Erro ao atualizar evento.');
               }
             })
             .catch((error) => {
               console.error(error);
-              alert("Erro ao atualizar evento.");
+              alert('Erro ao atualizar evento.');
             });
         } else {
-          alert("Por favor, insira um valor para atualizar.");
+          alert('Por favor, insira um valor para atualizar.');
         }
       }
     </script>
   </head>
   <body class="min-h-screen min-w-screen p-2">
     <div class="border rounded-md p-2 flex items-center justify-between">
-      <p class="text-xl font-semibold">Eventos</p>
+      <a href="/" class="text-xl font-semibold">Eventos</a>
       <div class="flex items-center gap-2">
         <a href="/categoria">Categorias</a>
         <a href="/cliente">Clientes</a>
@@ -146,7 +146,12 @@
         >
           <option value="" disabled>Selecione uma categoria</option>
           <% categorias.forEach((categoria) => {%>
-          <option value="<%=categoria.id%>"><%=categoria.tipo%></option>
+          <option
+            value="<%=categoria.id%>"
+            selected="<%= categoria.id == evento.idCategoria%>"
+          >
+            <%=categoria.tipo%>
+          </option>
           <%})%>
         </select>
         <select
@@ -158,7 +163,10 @@
         >
           <option value="" disabled>Selecione um local</option>
           <% locais.forEach((local) => {%>
-          <option value="<%=local.id%>">
+          <option
+            value="<%=local.id%>"
+            selected="<%= local.id == evento.idLocal%>"
+          >
             <%=local.cidade%> - <%=local.estado%>
           </option>
           <%})%>
@@ -172,7 +180,12 @@
         >
           <option value="" disabled>Selecione um usuário</option>
           <% usuarios.forEach((usuario) => {%>
-          <option value="<%=usuario.id%>"><%=usuario.nome%></option>
+          <option
+            value="<%=usuario.id%>"
+            selected="<%= usuario.id == evento.idUsuario%>"
+          >
+            <%=usuario.nome%>
+          </option>
           <%})%>
         </select>
         <button
@@ -184,6 +197,6 @@
         </button>
       </form>
     </div>
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4" defer></script>
   </body>
 </html>

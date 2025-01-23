@@ -3,49 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clientes</title>
+    <title>Usuários</title>
     <script>
-      function atualizarCliente() {
-        const nome = document.getElementById("nome").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const telefone = document.getElementById("telefone").value.trim();
-        if (nome && email && telefone) {
-          fetch(`/cliente/<%= cliente.id %>`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ nome, email, telefone }),
+      function atualizarUsuario() {
+        const nome = document.getElementById('nome').value.trim();
+        const email = document.getElementById('email').value.trim();
+        fetch('/usuario/<%=usuario.id%>', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nome,
+            email,
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = '/usuario';
+            } else {
+              alert('Erro ao atualizar usuario.');
+            }
           })
-            .then((response) => {
-              if (response.ok) {
-                window.location.href = "/cliente";
-              } else {
-                alert("Erro ao atualizar cliente.");
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-              alert("Erro ao atualizar cliente.");
-            });
-        } else {
-          alert("Por favor, insira um valor para atualizar.");
-        }
+          .catch((error) => {
+            console.error(error);
+            alert('Erro ao atualizar participante.');
+          });
       }
     </script>
   </head>
   <body class="min-h-screen min-w-screen p-2">
     <div class="border rounded-md p-2 flex items-center justify-between">
-      <a href="/cliente" class="text-xl font-semibold">Clientes</a>
+      <a href="/usuario" class="text-xl font-semibold">Usuários</a>
       <div class="flex items-center gap-2">
         <a href="/categoria">Categorias</a>
+        <a href="/cliente">Clientes</a>
         <a href="/">Eventos</a>
         <a href="/local">Locais</a>
         <a href="/participante">Participantes</a>
       </div>
       <div class="flex items-center gap-2">
         <a
-          href="/cliente/cadastrar"
+          href="/usuario/cadastrar"
           class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
         >
           Criar
@@ -65,29 +64,21 @@
           type="text"
           name="nome"
           id="nome"
-          placeholder="Digite a nome"
-          value="<%=cliente.nome%>"
+          placeholder="Digite o nome"
+          value="<%=usuario.nome%>"
           class="border rounded px-2.5 py-1.5 outline-none"
         />
         <input
           type="email"
           name="email"
           id="email"
-          placeholder="Digite o email"
-          value="<%=cliente.email%>"
-          class="border rounded px-2.5 py-1.5 outline-none"
-        />
-        <input
-          type="tel"
-          name="telefone"
-          id="telefone"
-          placeholder="Digite o telefone"
-          value="<%=cliente.telefone%>"
+          placeholder="Digite o e-mail"
+          value="<%=usuario.email%>"
           class="border rounded px-2.5 py-1.5 outline-none"
         />
         <button
+          onclick="atualizarUsuario()"
           type="button"
-          onclick="atualizarCliente()"
           class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors w-full"
         >
           Atualizar
