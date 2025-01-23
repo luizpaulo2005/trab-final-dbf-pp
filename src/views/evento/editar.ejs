@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eventos</title>
+    <script>
+      function atualizarEvento() {
+        const nome = document.getElementById("nome").value.trim();
+        const descricao = document.getElementById("descricao").value.trim();
+        const endereco = document.getElementById("endereco").value.trim();
+        const inicio = document.getElementById("inicio").value.trim();
+        const fim = document.getElementById("fim").value.trim();
+        const idCategoria = document.getElementById("idCategoria").value.trim();
+        const idLocal = document.getElementById("idLocal").value.trim();
+        const idUsuario = document.getElementById("idUsuario").value.trim();
+        console.log(`Nome: ${nome}`)
+        console.log(`Descricao: ${descricao}`)
+        console.log(`Endereco: ${endereco}`)
+        console.log(`Inicio: ${inicio}`)
+        console.log(`Fim: ${fim}`)
+        console.log(`IdCategoria: ${idCategoria}`)
+        console.log(`IdLocal: ${idLocal}`)
+        console.log(`IdUsuario: ${idUsuario}`)
+        if (
+          nome &&
+          descricao &&
+          endereco &&
+          inicio &&
+          fim &&
+          idCategoria &&
+          idLocal &&
+          idUsuario
+        ) {
+          fetch(`/<%= evento.id %>`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nome,
+              descricao,
+              endereco,
+              inicio,
+              fim,
+              idCategoria,
+              idLocal,
+              idUsuario,
+            }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                window.location.href = "/";
+              } else {
+                alert("Erro ao atualizar evento.");
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              alert("Erro ao atualizar evento.");
+            });
+        } else {
+          alert("Por favor, insira um valor para atualizar.");
+        }
+      }
+    </script>
+  </head>
+  <body class="min-h-screen min-w-screen p-2">
+    <div class="border rounded-md p-2 flex items-center justify-between">
+      <p class="text-xl font-semibold">Eventos</p>
+      <div class="flex items-center gap-2">
+        <a href="/categoria">Categorias</a>
+        <a href="/cliente">Clientes</a>
+        <a href="/local">Locais</a>
+        <a href="/participante">Participantes</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/cadastrar"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Criar
+        </a>
+        <button
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+    <div
+      class="h-[calc(100vh-5rem)] w-full flex items-center justify-center text-center"
+    >
+      <form class="flex flex-col items-center gap-2">
+        <input
+          type="text"
+          name="nome"
+          id="nome"
+          placeholder="Digite o nome"
+          value="<%=evento.nome%>"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none"
+        />
+        <input
+          type="text"
+          name="descricao"
+          id="descricao"
+          placeholder="Digite a descricao"
+          value="<%=evento.descricao%>"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none"
+        />
+        <input
+          type="text"
+          name="endereco"
+          id="endereco"
+          placeholder="Digite o endereco"
+          value="<%=evento.endereco%>"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none"
+        />
+        <input
+          type="date"
+          name="inicio"
+          id="inicio"
+          placeholder="Digite a data de inicio"
+          value="<%= new Date(evento.inicio).toISOString().split('T')[0]%>"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none w-full bg-transparent"
+        />
+        <input
+          type="date"
+          name="fim"
+          id="fim"
+          placeholder="Digite a data de fim"
+          value="<%= new Date(evento.fim).toISOString().split('T')[0]%>"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none w-full bg-transparent"
+        />
+        <select
+          name="idCategoria"
+          id="idCategoria"
+          value="<%=evento.idCategoria%>"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none w-full bg-transparent"
+        >
+          <option value="" disabled>Selecione uma categoria</option>
+          <% categorias.forEach((categoria) => {%>
+          <option value="<%=categoria.id%>"><%=categoria.tipo%></option>
+          <%})%>
+        </select>
+        <select
+          name="idLocal"
+          id="idLocal"
+          value="<%=evento.idLocal%>"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none w-full bg-transparent"
+        >
+          <option value="" disabled>Selecione um local</option>
+          <% locais.forEach((local) => {%>
+          <option value="<%=local.id%>">
+            <%=local.cidade%> - <%=local.estado%>
+          </option>
+          <%})%>
+        </select>
+        <select
+          name="idUsuario"
+          id="idUsuario"
+          value="<%=evento.idUsuario%>"
+          required
+          class="border rounded px-2.5 py-1.5 outline-none w-full bg-transparent"
+        >
+          <option value="" disabled>Selecione um usuário</option>
+          <% usuarios.forEach((usuario) => {%>
+          <option value="<%=usuario.id%>"><%=usuario.nome%></option>
+          <%})%>
+        </select>
+        <button
+          onclick="atualizarEvento()"
+          type="button"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors w-full"
+        >
+          Atualizar
+        </button>
+      </form>
+    </div>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+  </body>
+</html>

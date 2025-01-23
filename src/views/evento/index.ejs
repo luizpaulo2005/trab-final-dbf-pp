@@ -1,11 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Eventos</title>
-</head>
-<body>
-    
-</body>
+    <script>
+      function redirectToSearch() {
+        const input = document.getElementById("nome");
+        const nome = input.value.trim();
+        if (nome) {
+          window.location.href = `/buscar?nome=${encodeURIComponent(
+            nome
+          )}`;
+        } else {
+          alert("Por favor, insira um valor para buscar.");
+        }
+      }
+
+      function deleteEvento(id) {
+        fetch(`/${id}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              alert("Erro ao deletar evento.");
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("Erro ao deletar evento.");
+          });
+      }
+
+      window.onload = function () {
+        document
+          .getElementById("nome")
+          .addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              redirectToSearch();
+            }
+          });
+      };
+    </script>
+  </head>
+  <body class="min-h-screen min-w-screen p-2">
+    <div class="border rounded-md p-2 flex items-center justify-between">
+      <p class="text-xl font-semibold">Eventos</p>
+      <div class="flex items-center gap-2">
+        <a href="/categoria">Categorias</a>
+        <a href="/cliente">Clientes</a>
+        <a href="/local">Locais</a>
+        <a href="/participante">Participantes</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/cadastrar"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Criar
+        </a>
+        <div class="border px-2 py-1 rounded-md flex items-center gap-2">
+          <input
+            class="focus:outline-none"
+            type="text"
+            name="nome"
+            id="nome"
+            placeholder="Digite alguma coisa..."
+          />
+          <img
+            class="hover:cursor-pointer"
+            src="/search.png"
+            onclick="redirectToSearch()"
+          />
+        </div>
+        <button
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+    <div class="mt-2">
+      <% if (eventos.length <= 0) { %>
+      <p
+        class="h-[calc(100vh-5rem)] w-full flex items-center justify-center text-center"
+      >
+        Nenhuma evento cadastrado, cadastre um novo
+        <a
+          href="/cadastrar"
+          class="ml-1 underline text-blue-500 visited:text-violet-500"
+          >aqui</a
+        >
+      </p>
+      <% } else { %>
+      <div class="flex gap-2 flex-wrap">
+        <% eventos.forEach((evento) => { %>
+        <div
+          class="border rounded-md p-2 gap-2 flex items-center justify-between max-w-fit w-full"
+        >
+          <a href="/<%=evento.id%>"><%=evento.nome%></a>
+          <div class="flex items-center gap-2">
+            <button
+              onclick="deleteEvento('<%=evento.id%>')"
+              class="p-1 hover:bg-red-500 transition-colors rounded-md size-6"
+            >
+              <img src="/trash-2.png" />
+            </button>
+            <a
+              href="/editar/<%=evento.id%>"
+              class="p-1 hover:bg-blue-500 transition-colors rounded-md size-6"
+            >
+              <img src="/pencil.png" />
+            </a>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% } %>
+    </div>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+  </body>
 </html>

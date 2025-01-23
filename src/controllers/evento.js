@@ -1,5 +1,5 @@
 "use strict";
-const { Evento } = require("../models");
+const { Evento, Usuario, Categoria, Local } = require("../models");
 const { EventoBuilder } = require("../classes/evento");
 const {
   DefaultInputSizeStrategy,
@@ -7,9 +7,22 @@ const {
 
 const getEventos = async (req, res) => {
   try {
-    return res
-      .status(200)
-      .json(await Evento.findAll({ order: [["createdAt", "DESC"]] }));
+    const { nome } = req.query;
+
+    const eventos = await Evento.findAll({
+      order: [["createdAt", "DESC"]],
+      // include: ["local", "categoria", "usuario"],
+    });
+
+    if (nome) {
+      const filteredEventos = eventos.filter((evento) =>
+        evento.nome.toLowerCase().includes(nome.toLowerCase())
+      );
+
+      return res.render("evento", { eventos: filteredEventos });
+    }
+
+    return res.render("evento", { eventos });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -24,7 +37,7 @@ const getEvento = async (req, res) => {
       return res.status(404).json({ error: "Evento não encontrado" });
     }
 
-    return res.status(200).json(evento);
+    return res.render("evento/detalhes", { evento });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -64,7 +77,20 @@ const createEvento = async (req, res) => {
       .setEndereco(endereco)
       .build();
 
-    return res.status(201).json({ message: "Evento criado com sucesso" });
+    // return res.status(201).json({ message: "Evento criado com sucesso" });
+    return res.redirect("/");
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const createEventoView = async (req, res) => {
+  try {
+    const usuarios = await Usuario.findAll();
+    const locais = await Local.findAll();
+    const categorias = await Categoria.findAll();
+
+    return res.render("evento/cadastrar", { usuarios, locais, categorias });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -114,6 +140,25 @@ const updateEvento = async (req, res) => {
   }
 };
 
+const updateEventoView = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const evento = await Evento.findByPk(id);
+
+    if (!evento) {
+      return res.status(404).json({ error: "Evento não encontrado" });
+    }
+
+    const usuarios = await Usuario.findAll();
+    const locais = await Local.findAll();
+    const categorias = await Categoria.findAll();
+
+    return res.render("evento/editar", { evento, usuarios, locais, categorias });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
 const deleteEvento = async (req, res) => {
   try {
     const { id } = req.params;
@@ -136,6 +181,8 @@ module.exports = {
   getEventos,
   getEvento,
   createEvento,
+  createEventoView,
   updateEvento,
+  updateEventoView,
   deleteEvento,
 };
