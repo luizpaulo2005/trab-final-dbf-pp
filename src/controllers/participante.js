@@ -60,15 +60,18 @@ const updateParticipante = async (req, res) => {
     const { id } = req.params;
     const { idCliente, idEvento } = req.body;
 
-    const participantee = await Participante.findByPk(id);
+    const participante = await Participante.findByPk(id);
 
-    if (!participantee) {
+    if (!participante) {
       return res.status(404).json({ error: "Participante não encontrado" });
     }
 
     await Participante.update(
-      { idCliente, idEvento },
-      { where: { id: participantee.id } }
+      {
+        idCliente: idCliente || participante.idCliente,
+        idEvento: idEvento || participante.idEvento,
+      },
+      { where: { id: participante.id } }
     );
 
     return res
