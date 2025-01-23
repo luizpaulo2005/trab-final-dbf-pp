@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clientes</title>
+    <script>
+      function atualizarCliente() {
+        const nome = document.getElementById("nome").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const telefone = document.getElementById("telefone").value.trim();
+        if (nome && email && telefone) {
+          fetch(`/cliente/<%= cliente.id %>`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ nome, email, telefone }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                window.location.href = "/cliente";
+              } else {
+                alert("Erro ao atualizar cliente.");
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              alert("Erro ao atualizar cliente.");
+            });
+        } else {
+          alert("Por favor, insira um valor para atualizar.");
+        }
+      }
+    </script>
+  </head>
+  <body class="min-h-screen min-w-screen p-2">
+    <div class="border rounded-md p-2 flex items-center justify-between">
+      <a href="/cliente" class="text-xl font-semibold">Clientes</a>
+      <div class="flex items-center gap-2">
+        <a href="/categoria">Categorias</a>
+        <a href="/">Eventos</a>
+        <a href="/local">Locais</a>
+        <a href="/participante">Participantes</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/cliente/cadastrar"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Criar
+        </a>
+        <button
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+    <div
+      class="h-[calc(100vh-5rem)] w-full flex items-center justify-center text-center"
+    >
+      <form class="flex flex-col items-center gap-2">
+        <input
+          type="text"
+          name="nome"
+          id="nome"
+          placeholder="Digite a nome"
+          value="<%=cliente.nome%>"
+          class="border rounded px-2.5 py-1.5 outline-none"
+        />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Digite o email"
+          value="<%=cliente.email%>"
+          class="border rounded px-2.5 py-1.5 outline-none"
+        />
+        <input
+          type="tel"
+          name="telefone"
+          id="telefone"
+          placeholder="Digite o telefone"
+          value="<%=cliente.telefone%>"
+          class="border rounded px-2.5 py-1.5 outline-none"
+        />
+        <button
+          type="button"
+          onclick="atualizarCliente()"
+          class="bg-zinc-700 text-zinc-50 px-2.5 py-1.5 rounded-md hover:bg-zinc-600 transition-colors w-full"
+        >
+          Atualizar
+        </button>
+      </form>
+    </div>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+  </body>
+</html>
