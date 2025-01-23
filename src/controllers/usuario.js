@@ -102,6 +102,21 @@ const updateUsuario = async (req, res) => {
   }
 };
 
+const updateUsuarioView = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const usuario = await Usuario.findByPk(id);
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    return res.render("usuario/editar", { usuario });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 const deleteUsuario = async (req, res) => {
   try {
     const { id } = req.params;
@@ -127,4 +142,5 @@ module.exports = {
   getUsuario,
   getUsuarios,
   updateUsuario,
+  updateUsuarioView,
 };
